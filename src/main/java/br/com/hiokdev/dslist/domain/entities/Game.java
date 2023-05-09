@@ -34,10 +34,10 @@ public class Game {
   @Column(name="img_url", nullable = false)
   private String imgUrl;
 
-  @Column(name = "short_description", nullable = false)
+  @Column(name = "short_description", nullable = false, columnDefinition = "TEXT")
   private String shortDescription;
 
-  @Column(name = "long_description", nullable = false)
+  @Column(name = "long_description", nullable = false, columnDefinition = "TEXT")
   private String longDescription;
 
   public Game() {
