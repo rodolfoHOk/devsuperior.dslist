@@ -17,6 +17,10 @@
 - Spring Validation
 - Lombok
 
+## Modelo de domínio
+
+![Model](https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dslist-model.png)
+
 ## Rodar projeto
 
 - ./mvnw package
