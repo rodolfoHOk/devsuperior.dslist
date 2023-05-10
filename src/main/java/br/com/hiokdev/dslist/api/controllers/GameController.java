@@ -1,9 +1,11 @@
 package br.com.hiokdev.dslist.api.controllers;
 
+import br.com.hiokdev.dslist.api.dto.GameDTO;
 import br.com.hiokdev.dslist.api.dto.GameMinDTO;
 import br.com.hiokdev.dslist.domain.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,13 @@ public class GameController {
     var games = gameService.findAll();
 
     return games.stream().map(GameMinDTO::new).toList();
+  }
+
+  @GetMapping(value = "/{id}")
+  public GameDTO findById(@PathVariable Long id) {
+    var game = gameService.findById(id);
+
+    return new GameDTO(game);
   }
 
 }
