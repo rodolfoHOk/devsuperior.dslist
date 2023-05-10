@@ -2,6 +2,7 @@ package br.com.hiokdev.dslist.domain.services;
 
 import br.com.hiokdev.dslist.domain.entities.Game;
 import br.com.hiokdev.dslist.domain.exceptions.ResourceNotFoundException;
+import br.com.hiokdev.dslist.domain.projections.GameMinProjection;
 import br.com.hiokdev.dslist.domain.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class GameService {
   @Transactional(readOnly = true)
   public Game findById(Long id) {
     return gameRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+  }
+
+  @Transactional(readOnly = true)
+  public List<GameMinProjection> findAllByList(Long listId) {
+    return gameRepository.searchByList(listId);
   }
 
 }
