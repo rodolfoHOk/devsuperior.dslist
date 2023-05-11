@@ -2,6 +2,7 @@ package br.com.hiokdev.dslist.api.exceptionhandler;
 
 import br.com.hiokdev.dslist.domain.exceptions.BusinessException;
 import br.com.hiokdev.dslist.domain.exceptions.ResourceNotFoundException;
+import br.com.hiokdev.dslist.domain.exceptions.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -28,6 +29,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<?> resourceNotFoundExceptionHandler(ResourceNotFoundException ex, WebRequest request) {
     HttpStatusCode statusCode = HttpStatus.NOT_FOUND;
+    HttpHeaders headers = new HttpHeaders();
+    ProblemDetail body = ProblemDetail.forStatus(statusCode);
+    body.setDetail(ex.getMessage());
+
+    return handleExceptionInternal(ex, body, headers, statusCode, request);
+  }
+
+  @ExceptionHandler(ValidationException.class)
+  public ResponseEntity<?> validationExceptionHandler(ValidationException ex, WebRequest request) {
+    HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
     HttpHeaders headers = new HttpHeaders();
     ProblemDetail body = ProblemDetail.forStatus(statusCode);
     body.setDetail(ex.getMessage());
