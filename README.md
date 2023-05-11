@@ -7,15 +7,13 @@
 - Java
 - Spring Framework
 - Rest
-- H2 database
-- PostgreSQL
+- H2 database (development)
+- PostgreSQL (staging / production)
 
 ### Bibliotecas adicionais / dependências
 
 - Spring WEB
 - Spring Data JPA
-- Spring Validation
-- Lombok
 
 ## Modelo de domínio
 
