@@ -53,10 +53,10 @@ public class GameListController {
   }
 
   @PostMapping
-  public GameListDTO create(@Valid @RequestBody GameListInputDTO gameListInputDTO) {
+  public GameListDTO create(@RequestBody GameListInputDTO gameListInputDTO) {
     var gameListInput = GameListInputDTO.toEntity(gameListInputDTO);
-    var gameListCreated = gameListService.create(gameListInput);
-    return new GameListDTO(gameListCreated);
+    var createdGameList = gameListService.create(gameListInput);
+    return new GameListDTO(createdGameList);
   }
 
   @DeleteMapping(value = "/{id}")
@@ -68,8 +68,8 @@ public class GameListController {
   @PutMapping(value = "/{id}")
   public GameListDTO update(@PathVariable Long id, @Valid @RequestBody GameListInputDTO gameListInputDTO) {
     var gameListInput = GameListInputDTO.toEntity(gameListInputDTO);
-    var gameListUpdated = gameListService.update(id, gameListInput);
-    return new GameListDTO(gameListUpdated);
+    var updatedGameList = gameListService.update(id, gameListInput);
+    return new GameListDTO(updatedGameList);
   }
 
 }

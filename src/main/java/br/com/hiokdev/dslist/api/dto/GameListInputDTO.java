@@ -11,7 +11,7 @@ import lombok.Setter;
 public class GameListInputDTO {
 
   @NotBlank
-  @Size(min = 2)
+  @Size(min = 2, max = 100)
   private String name;
 
   public static GameList toEntity (GameListInputDTO gameListInputDTO) {

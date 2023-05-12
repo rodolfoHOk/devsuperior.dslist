@@ -61,9 +61,7 @@ public class GameListService {
     if (existsByName(gameList.getName())) {
       throw new ValidationException("Game list already exists");
     }
-    if (gameList.getName().length() < 2) {
-      throw new ValidationException("Game list name must be at least two characters");
-    }
+    gameList.validate();
     return gameListRepository.save(gameList);
   }
 
@@ -80,6 +78,7 @@ public class GameListService {
 
   @Transactional
   public GameList update(Long gameListId, GameList gameListInput) {
+    gameListInput.validate();
     var gameToUpdate = gameListRepository.findById(gameListId)
       .orElseThrow(() -> new ValidationException("Game list not found"));
     if (!gameToUpdate.getName().equals(gameListInput.getName())

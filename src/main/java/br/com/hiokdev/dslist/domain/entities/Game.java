@@ -1,20 +1,35 @@
 package br.com.hiokdev.dslist.domain.entities;
 
+import br.com.hiokdev.dslist.domain.exceptions.ValidationException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Objects;
+import java.time.Year;
+
 
 @Entity
 @Table(name = "tb_game")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Game {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private Long id;
 
   @Column(nullable = false, unique = true, length = 100)
@@ -39,108 +54,47 @@ public class Game {
 
   @Column(name = "long_description", nullable = false, columnDefinition = "TEXT")
   private String longDescription;
-
-  public Game() {
-  }
-
-  public Game(Long id, String title, Integer year, String genre, String platforms, Double score, String imgUrl,
-              String shortDescription, String longDescription) {
-    this.id = id;
-    this.title = title;
-    this.year = year;
-    this.genre = genre;
-    this.platforms = platforms;
-    this.score = score;
-    this.imgUrl = imgUrl;
-    this.shortDescription = shortDescription;
-    this.longDescription = longDescription;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Integer getYear() {
-    return year;
-  }
-
-  public void setYear(Integer year) {
-    this.year = year;
-  }
-
-  public String getGenre() {
-    return genre;
-  }
-
-  public void setGenre(String genre) {
-    this.genre = genre;
-  }
-
-  public String getPlatforms() {
-    return platforms;
-  }
-
-  public void setPlatforms(String platforms) {
-    this.platforms = platforms;
-  }
-
-  public Double getScore() {
-    return score;
-  }
-
-  public void setScore(Double score) {
-    this.score = score;
-  }
-
-  public String getImgUrl() {
-    return imgUrl;
-  }
-
-  public void setImgUrl(String imgUrl) {
-    this.imgUrl = imgUrl;
-  }
-
-  public String getShortDescription() {
-    return shortDescription;
-  }
-
-  public void setShortDescription(String shortDescription) {
-    this.shortDescription = shortDescription;
-  }
-
-  public String getLongDescription() {
-    return longDescription;
-  }
-
-  public void setLongDescription(String longDescription) {
-    this.longDescription = longDescription;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Game game = (Game) o;
-
-    return Objects.equals(id, game.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return id != null ? id.hashCode() : 0;
+  
+  public void validate() {
+    if (this.title.length() < 2) {
+      throw new ValidationException("Title must be at least two characters");
+    }
+    if (this.title.length() > 100) {
+      throw new ValidationException("Title must have a maximum of 100 characters");
+    }
+    if (this.year < 1970) {
+      throw new ValidationException("Year must be greater than 1970");
+    }
+    if (this.year > Year.now().getValue()) {
+      throw new ValidationException("Year must be less than or equal to " + Year.now().getValue());
+    }
+    if (this.genre.length() == 0) {
+      throw new ValidationException("Genre cannot be blank");
+    }
+    if (this.genre.length() > 80) {
+      throw new ValidationException("Genre must have a maximum of 80 characters");
+    }
+    if (this.platforms.length() == 0) {
+      throw new ValidationException("Platforms cannot be blank");
+    }
+    if (this.platforms.length() > 80) {
+      throw new ValidationException("Platforms must have a maximum of 80 characters");
+    }
+    if (this.score != null && this.getScore() < 0.0) {
+      throw new ValidationException("Score must be positive or zero");
+    }
+    if (this.imgUrl.length() == 0) {
+      throw new ValidationException("ImgUrl cannot be blank");
+    }
+    if (this.imgUrl.length() > 255) {
+      throw new ValidationException("ImgUrl must have a maximum of 255 characters");
+    }
+    if (this.shortDescription.length() == 0) {
+      throw new ValidationException("Short description cannot be blank");
+    }
+    if (this.longDescription.length() == 0) {
+      throw new ValidationException("Long description cannot be blank");
+    }
   }
 
 }

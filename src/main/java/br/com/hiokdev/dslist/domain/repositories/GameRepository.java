@@ -28,4 +28,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 		""")
 	Long countByList(Long listId);
 
+	Boolean existsByTitle(String title);
+
 }
