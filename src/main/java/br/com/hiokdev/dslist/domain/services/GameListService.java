@@ -3,6 +3,7 @@ package br.com.hiokdev.dslist.domain.services;
 import br.com.hiokdev.dslist.domain.entities.GameList;
 import br.com.hiokdev.dslist.domain.exceptions.ValidationException;
 import br.com.hiokdev.dslist.domain.repositories.GameListRepository;
+import br.com.hiokdev.dslist.domain.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,12 @@ import java.util.List;
 public class GameListService {
 
   private final GameListRepository gameListRepository;
+  private final GameRepository gameRepository;
 
   @Autowired
-  public GameListService(GameListRepository gameListRepository) {
+  public GameListService(GameListRepository gameListRepository, GameRepository gameRepository) {
     this.gameListRepository = gameListRepository;
+    this.gameRepository = gameRepository;
   }
 
   @Transactional(readOnly = true)
@@ -38,6 +41,17 @@ public class GameListService {
       throw new ValidationException("Game list name must be at least two characters");
     }
     return gameListRepository.save(gameList);
+  }
+
+  @Transactional
+  public void delete(Long gameListId) {
+    if (!gameListRepository.existsById(gameListId)) {
+      throw new ValidationException("Game list not exists");
+    }
+    if (gameRepository.countByList(gameListId) > 0) {
+      throw new ValidationException("Game list in use");
+    }
+    gameListRepository.deleteById(gameListId);
   }
 
 }

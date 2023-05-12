@@ -19,4 +19,13 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 		""")
 	List<GameMinProjection> searchByList(Long listId);
 
+	@Query(nativeQuery = true, value = """
+		SELECT COUNT(*)
+		FROM tb_game tg
+		INNER JOIN tb_belonging tb
+		ON tg.id = tb.game_id
+		WHERE tb.list_id = :listId
+		""")
+	Long countByList(Long listId);
+
 }
