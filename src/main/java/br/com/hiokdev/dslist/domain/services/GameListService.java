@@ -30,6 +30,17 @@ public class GameListService {
   @Transactional
   public void move(Long gameListId, int sourceIndex, int destinationIndex) {
     var list = gameRepository.searchByList(gameListId);
+
+    if (sourceIndex == destinationIndex) {
+      throw new ValidationException("Source index must be different from destination index");
+    }
+    if (sourceIndex < 0 || sourceIndex >= list.size()) {
+      throw new ValidationException("Invalid source index");
+    }
+    if (destinationIndex < 0 || destinationIndex >= list.size()) {
+      throw new ValidationException("Invalid destination index");
+    }
+
     var gameToMove = list.remove(sourceIndex);
     list.add(destinationIndex, gameToMove);
 

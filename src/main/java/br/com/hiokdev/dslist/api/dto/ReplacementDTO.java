@@ -1,8 +1,13 @@
 package br.com.hiokdev.dslist.api.dto;
 
+import jakarta.validation.constraints.PositiveOrZero;
+
 public class ReplacementDTO {
 
+  @PositiveOrZero
   private Integer sourceIndex;
+
+  @PositiveOrZero
   private Integer destinationIndex;
 
   public Integer getSourceIndex() {
