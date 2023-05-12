@@ -14,6 +14,8 @@
 
 - Spring WEB
 - Spring Data JPA
+- Spring Validation
+- Lombok
 
 ## Modelo de domínio
 

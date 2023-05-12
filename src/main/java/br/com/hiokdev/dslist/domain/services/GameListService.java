@@ -27,6 +27,19 @@ public class GameListService {
     return gameListRepository.findAll();
   }
 
+  @Transactional
+  public void move(Long gameListId, int sourceIndex, int destinationIndex) {
+    var list = gameRepository.searchByList(gameListId);
+    var gameToMove = list.remove(sourceIndex);
+    list.add(destinationIndex, gameToMove);
+
+    int min = Math.min(sourceIndex, destinationIndex);
+    int max = Math.max(sourceIndex, destinationIndex);
+    for (int i = min; i <= max; i++) {
+      gameListRepository.updateBelongingPosition(gameListId, list.get(i).getId(), i);
+    }
+  }
+
   @Transactional(readOnly = true)
   public Boolean existsByName(String name) {
     return gameListRepository.existsByName(name);
