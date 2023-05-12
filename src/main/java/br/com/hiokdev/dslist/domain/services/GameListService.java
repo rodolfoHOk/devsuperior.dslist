@@ -78,4 +78,16 @@ public class GameListService {
     gameListRepository.deleteById(gameListId);
   }
 
+  @Transactional
+  public GameList update(Long gameListId, GameList gameListInput) {
+    var gameToUpdate = gameListRepository.findById(gameListId)
+      .orElseThrow(() -> new ValidationException("Game list not found"));
+    if (!gameToUpdate.getName().equals(gameListInput.getName())
+      && existsByName(gameListInput.getName())) {
+      throw new ValidationException("Game list already exists");
+    }
+    gameToUpdate.setName(gameListInput.getName());
+    return gameListRepository.save(gameToUpdate);
+  }
+
 }
