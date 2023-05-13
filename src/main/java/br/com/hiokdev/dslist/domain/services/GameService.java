@@ -1,6 +1,7 @@
 package br.com.hiokdev.dslist.domain.services;
 
 import br.com.hiokdev.dslist.domain.entities.Belonging;
+import br.com.hiokdev.dslist.domain.entities.BelongingPK;
 import br.com.hiokdev.dslist.domain.entities.Game;
 import br.com.hiokdev.dslist.domain.exceptions.ResourceNotFoundException;
 import br.com.hiokdev.dslist.domain.exceptions.ValidationException;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Year;
 import java.util.List;
 
 @Service
@@ -62,6 +62,21 @@ public class GameService {
     belongingRepository.save(belonging);
 
     return savedGame;
+  }
+
+  @Transactional
+  public void delete(Long gameId) {
+    if (!gameRepository.existsById(gameId)) {
+      throw new ValidationException("Game not exists");
+    }
+
+    List<Belonging> belongings = belongingRepository.findAllByGameId(gameId);
+    belongings.forEach(belonging -> {
+      BelongingPK belongingId = new BelongingPK(belonging.getId().getGame(), belonging.getId().getList());
+      belongingRepository.deleteById(belongingId);
+    });
+
+    gameRepository.deleteById(gameId);
   }
 
 }
