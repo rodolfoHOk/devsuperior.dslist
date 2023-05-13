@@ -2,7 +2,11 @@ package br.com.hiokdev.dslist.api.dto;
 
 import br.com.hiokdev.dslist.domain.entities.Game;
 import br.com.hiokdev.dslist.domain.projections.GameMinProjection;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class GameMinDTO {
 
   private Long id;
@@ -10,9 +14,6 @@ public class GameMinDTO {
   private Integer year;
   private String imgUrl;
   private String shortDescription;
-
-  public GameMinDTO() {
-  }
 
   public GameMinDTO(Game entity) {
     this.id = entity.getId();
@@ -28,26 +29,6 @@ public class GameMinDTO {
     this.year = projection.getGameYear();
     this.imgUrl = projection.getImgUrl();
     this.shortDescription = projection.getShortDescription();
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public Integer getYear() {
-    return year;
-  }
-
-  public String getImgUrl() {
-    return imgUrl;
-  }
-
-  public String getShortDescription() {
-    return shortDescription;
   }
 
 }
