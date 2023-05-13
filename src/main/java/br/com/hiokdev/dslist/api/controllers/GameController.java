@@ -5,6 +5,7 @@ import br.com.hiokdev.dslist.api.dto.GameInputDTO;
 import br.com.hiokdev.dslist.api.dto.GameMinDTO;
 import br.com.hiokdev.dslist.domain.services.GameService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,14 +22,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/games")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GameController {
 
   private final GameService gameService;
-
-  @Autowired
-  public GameController(GameService gameService) {
-    this.gameService = gameService;
-  }
 
   @GetMapping
   public List<GameMinDTO> findAll() {

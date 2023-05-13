@@ -9,6 +9,7 @@ import br.com.hiokdev.dslist.domain.projections.GameMinProjection;
 import br.com.hiokdev.dslist.domain.repositories.BelongingRepository;
 import br.com.hiokdev.dslist.domain.repositories.GameListRepository;
 import br.com.hiokdev.dslist.domain.repositories.GameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,19 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GameService {
 
   private final GameRepository gameRepository;
   private final GameListRepository gameListRepository;
   private final BelongingRepository belongingRepository;
-
-  @Autowired
-  public GameService(GameRepository gameRepository, GameListRepository gameListRepository,
-                     BelongingRepository belongingRepository) {
-    this.gameRepository = gameRepository;
-    this.gameListRepository = gameListRepository;
-    this.belongingRepository = belongingRepository;
-  }
 
   @Transactional(readOnly = true)
   public List<Game> findAll() {

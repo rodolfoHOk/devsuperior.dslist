@@ -4,6 +4,7 @@ import br.com.hiokdev.dslist.domain.entities.GameList;
 import br.com.hiokdev.dslist.domain.exceptions.ValidationException;
 import br.com.hiokdev.dslist.domain.repositories.GameListRepository;
 import br.com.hiokdev.dslist.domain.repositories.GameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,16 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GameListService {
 
   private final GameListRepository gameListRepository;
   private final GameRepository gameRepository;
-
-  @Autowired
-  public GameListService(GameListRepository gameListRepository, GameRepository gameRepository) {
-    this.gameListRepository = gameListRepository;
-    this.gameRepository = gameRepository;
-  }
 
   @Transactional(readOnly = true)
   public List<GameList> findAll() {
