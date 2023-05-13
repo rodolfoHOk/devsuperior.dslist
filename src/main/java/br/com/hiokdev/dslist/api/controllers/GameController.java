@@ -3,6 +3,7 @@ package br.com.hiokdev.dslist.api.controllers;
 import br.com.hiokdev.dslist.api.dto.GameDTO;
 import br.com.hiokdev.dslist.api.dto.GameInputDTO;
 import br.com.hiokdev.dslist.api.dto.GameMinDTO;
+import br.com.hiokdev.dslist.api.openapi.GameControllerOpenAPI;
 import br.com.hiokdev.dslist.domain.services.GameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +24,25 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/games")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class GameController {
+public class GameController implements GameControllerOpenAPI {
 
   private final GameService gameService;
 
+  @Override
   @GetMapping
   public List<GameMinDTO> findAll() {
     var games = gameService.findAll();
     return games.stream().map(GameMinDTO::new).toList();
   }
 
+  @Override
   @GetMapping(value = "/{id}")
   public GameDTO findById(@PathVariable Long id) {
     var game = gameService.findById(id);
     return new GameDTO(game);
   }
 
+  @Override
   @PostMapping
   public GameDTO create(@Valid @RequestBody GameInputDTO gameInputDTO) {
     var gameInput = GameInputDTO.toEntity(gameInputDTO);
@@ -46,12 +50,14 @@ public class GameController {
     return new GameDTO(savedGame);
   }
 
+  @Override
   @DeleteMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable Long id) {
     gameService.delete(id);
   }
 
+  @Override
   @PutMapping(value = "/{id}")
   public GameDTO update(@PathVariable(name = "id") Long gameId, @Valid @RequestBody GameInputDTO gameInputDTO) {
     var gameInput = GameInputDTO.toEntity(gameInputDTO);

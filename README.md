@@ -9,6 +9,7 @@
 - Rest
 - H2 database (development)
 - PostgreSQL (staging / production)
+- Documentação OpenAPI (swagger ui)
 
 ### Bibliotecas adicionais / dependências
 
@@ -16,6 +17,7 @@
 - Spring Data JPA
 - Spring Validation
 - Lombok
+- SpringDoc
 
 ## Modelo de domínio
 
@@ -33,6 +35,7 @@
 - Endpoint de criação de game
 - Endpoint de exclusão de game
 - Endpoint de atualização de game
+- Adicionado documentação Open API
 
 ## Rodar projeto
 

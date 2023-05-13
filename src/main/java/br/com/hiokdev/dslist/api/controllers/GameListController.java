@@ -25,29 +25,33 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/lists")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class GameListController {
+public class GameListController implements GameListControllerOpenAPI {
 
   private final GameListService gameListService;
   private final GameService gameService;
 
+  @Override
   @GetMapping
   public List<GameListDTO> findAll() {
     var list = gameListService.findAll();
     return list.stream().map(GameListDTO::new).toList();
   }
 
+  @Override
   @GetMapping(value = "/{id}/games")
   public List<GameMinDTO> findGamesByList(@PathVariable(value = "id") Long listId) {
     var games = gameService.findAllByList(listId);
     return games.stream().map(GameMinDTO::new).toList();
   }
 
+  @Override
   @PostMapping(value = "/{id}/replacement")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void move(@PathVariable(name = "id") Long listId, @Valid @RequestBody ReplacementDTO body) {
     gameListService.move(listId, body.getSourceIndex(), body.getDestinationIndex());
   }
 
+  @Override
   @PostMapping
   public GameListDTO create(@RequestBody GameListInputDTO gameListInputDTO) {
     var gameListInput = GameListInputDTO.toEntity(gameListInputDTO);
@@ -55,12 +59,14 @@ public class GameListController {
     return new GameListDTO(createdGameList);
   }
 
+  @Override
   @DeleteMapping(value = "/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void delete(@PathVariable Long id) {
     gameListService.delete(id);
   }
 
+  @Override
   @PutMapping(value = "/{id}")
   public GameListDTO update(@PathVariable Long id, @Valid @RequestBody GameListInputDTO gameListInputDTO) {
     var gameListInput = GameListInputDTO.toEntity(gameListInputDTO);
