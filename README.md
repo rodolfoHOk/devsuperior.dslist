@@ -35,7 +35,15 @@
 - Endpoint de criação de game
 - Endpoint de exclusão de game
 - Endpoint de atualização de game
-- Adicionado documentação Open API
+- Adicionado documentação OpenAPI
+
+## OpenAPI images
+
+![OpenAPI image 01](https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dslist-01.png)
+
+![OpenAPI image 02](https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dslist-02.png)
+
+![OpenAPI image 03](https://raw.githubusercontent.com/rodolfoHOk/portfolio-img/main/images/dslist-03.png)
 
 ## Rodar projeto
 
