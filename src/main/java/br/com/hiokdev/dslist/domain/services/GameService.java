@@ -51,7 +51,6 @@ public class GameService {
 
     var gameList = gameListRepository.findById(gameListId)
       .orElseThrow(() -> new ValidationException("Game list not exists"));
-
     if (gameRepository.existsByTitle(game.getTitle())) {
       throw new ValidationException("Game name already exists");
     }
@@ -77,6 +76,39 @@ public class GameService {
     });
 
     gameRepository.deleteById(gameId);
+  }
+
+  @Transactional
+  public Game update(Long gameListId, Long gameId, Game gameInput) {
+    gameInput.validate();
+    var gameList = gameListRepository.findById(gameListId)
+      .orElseThrow(() -> new ValidationException("Game list not exists"));
+    var gameToUpdate = gameRepository.findById(gameId).orElseThrow(() -> new ValidationException("Game not found"));
+    if (!gameInput.getTitle().equals(gameToUpdate.getTitle()) && gameRepository.existsByTitle(gameInput.getTitle())) {
+      throw new ValidationException("Game title already exists");
+    }
+
+    gameToUpdate.setTitle(gameInput.getTitle());
+    gameToUpdate.setYear(gameInput.getYear());
+    gameToUpdate.setGenre(gameInput.getGenre());
+    gameToUpdate.setPlatforms(gameInput.getPlatforms());
+    gameToUpdate.setScore(gameInput.getScore());
+    gameToUpdate.setImgUrl(gameInput.getImgUrl());
+    gameToUpdate.setShortDescription(gameInput.getShortDescription());
+    gameToUpdate.setLongDescription(gameInput.getLongDescription());
+    var savedGame = gameRepository.save(gameToUpdate);
+
+    List<Belonging> belongings = belongingRepository.findAllByGameId(savedGame.getId());
+    belongings.forEach(belonging -> {
+      if (!belonging.getId().getList().equals(gameList)) {
+        int position = belonging.getPosition();
+        belongingRepository.delete(belonging);
+        Belonging newBelonging = new Belonging(savedGame, gameList, position);
+        belongingRepository.save(newBelonging);
+      }
+    });
+
+    return savedGame;
   }
 
 }
